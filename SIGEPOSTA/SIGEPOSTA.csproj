@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B79527C-1AEF-4D84-BE34-B41FDA0E378B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SIGEPOSTA</RootNamespace>
+    <AssemblyName>SIGEPOSTA</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Datos\MedicamentoDatos.cs" />
+    <Compile Include="Negocio\InventarioServicio.cs" />
+    <Compile Include="Negocio\Cie10.cs" />
+    <Compile Include="Datos\Cie10Datos.cs" />
+    <Compile Include="Negocio\Cie10Servicio.cs" />
+    <Compile Include="Presentacion\CuadroCie10.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmCie10.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Negocio\ItemCatalogo.cs" />
+    <Compile Include="Datos\CatalogoDatos.cs" />
+    <Compile Include="Negocio\CatalogoServicio.cs" />
+    <Compile Include="Presentacion\FrmFormasUnidades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Negocio\Proveedor.cs" />
+    <Compile Include="Datos\ProveedorDatos.cs" />
+    <Compile Include="Negocio\ProveedorServicio.cs" />
+    <Compile Include="Presentacion\FrmProveedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmInventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmHistorialMovimientos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Datos\HistoriaDatos.cs" />
+    <Compile Include="Datos\PacienteDatos.cs" />
+    <Compile Include="Negocio\PacienteServicio.cs" />
+    <Compile Include="Negocio\Posta.cs" />
+    <Compile Include="Negocio\ValidacionException.cs" />
+    <Compile Include="Presentacion\FrmHistoriaClinica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmPacientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Datos\Conexion.cs" />
+    <Compile Include="Datos\AlergiaDatos.cs" />
+    <Compile Include="Negocio\SignosVitales.cs" />
+    <Compile Include="Negocio\Alergia.cs" />
+    <Compile Include="Datos\AuditoriaDatos.cs" />
+    <Compile Include="Negocio\AuditoriaServicio.cs" />
+    <Compile Include="Presentacion\FrmAuditoria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\PanelSignosVitales.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Datos\PatronBusqueda.cs" />
+    <Compile Include="Negocio\ResultadoPagina.cs" />
+    <Compile Include="Presentacion\ControladorBusqueda.cs" />
+    <Compile Include="Datos\EstablecimientoDatos.cs" />
+    <Compile Include="Negocio\Establecimiento.cs" />
+    <Compile Include="Datos\DashboardDatos.cs" />
+    <Compile Include="Negocio\DatosDashboard.cs" />
+    <Compile Include="Negocio\DashboardServicio.cs" />
+    <Compile Include="Presentacion\TarjetaKpi.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Presentacion\PanelDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Datos\ReporteDatos.cs" />
+    <Compile Include="Negocio\Excepciones.cs" />
+    <Compile Include="Negocio\UsuarioServicio.cs" />
+    <Compile Include="Negocio\RespaldoModelos.cs" />
+    <Compile Include="Negocio\RespaldoServicio.cs" />
+    <Compile Include="Negocio\ReporteTabla.cs" />
+    <Compile Include="Negocio\ReporteServicio.cs" />
+    <Compile Include="Seguridad\ArchivoRespaldoSeguro.cs" />
+    <Compile Include="Presentacion\MonitorInactividad.cs" />
+    <Compile Include="Presentacion\ManejadorErrores.cs" />
+    <Compile Include="Presentacion\FrmUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmRespaldo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmReportes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Datos\UsuarioDatos.cs" />
+    <Compile Include="Presentacion\Estilo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmCrearAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FrmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Negocio\AutenticacionServicio.cs" />
+    <Compile Include="Negocio\Permisos.cs" />
+    <Compile Include="Negocio\Atencion.cs" />
+    <Compile Include="Negocio\HistoriaClinica.cs" />
+    <Compile Include="Negocio\Medicamento.cs" />
+    <Compile Include="Negocio\MovimientoInventario.cs" />
+    <Compile Include="Negocio\Paciente.cs" />
+    <Compile Include="Negocio\Persona.cs" />
+    <Compile Include="Negocio\Rol.cs" />
+    <Compile Include="Negocio\Usuario.cs" />
+    <Compile Include="Negocio\Validador.cs" />
+    <Compile Include="Seguridad\CifradoAes.cs" />
+    <Compile Include="Seguridad\GestorLlaves.cs" />
+    <Compile Include="Seguridad\HashContrasena.cs" />
+    <Compile Include="Seguridad\HmacDni.cs" />
+    <Compile Include="Seguridad\Sesion.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FrmHistorialMovimientos.resx">
+      <DependentUpon>FrmHistorialMovimientos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

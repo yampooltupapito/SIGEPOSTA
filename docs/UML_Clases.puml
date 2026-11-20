@@ -1,0 +1,849 @@
+@startuml UML_Clases_SIGEPOSTA
+' Diagrama de clases de SIGEPOSTA (generado leyendo el código real del proyecto).
+' Para verlo: https://www.plantuml.com/plantuml  o  extensión "PlantUML" de VS Code.
+title SIGEPOSTA - Diagrama de clases por capas
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+package "Presentacion" {
+    class Estilo <<static>> {
+        +Rojo : Color
+        +Morado : Color
+        +Dorado : Color
+        +EspacioCampos : int
+        +MargenInterior : int
+        +AltoCampo : int
+        +PrepararDialogo(Form, string)
+        +CrearBarraTitulo(string) : Panel
+        +CrearRecuadro(string) : GroupBox
+        +CrearCampo(string, Control) : TableLayoutPanel
+        +CrearCampoConError(string, Control, Label) : TableLayoutPanel
+        +CrearBotonPrimario(string) : Button
+        +CrearBotonSecundario(string) : Button
+        +CrearBotonPeligro(string) : Button
+        +EstilizarGrid(DataGridView)
+        +CrearBarraEstado(ToolStripStatusLabel) : StatusStrip
+        +MostrarConsulta(ToolStripStatusLabel, long)
+        +CrearPaginador(...) : TableLayoutPanel
+        +PintarFilaAlerta(DataGridViewRow, Medicamento)
+        +VincularEnter(Form, Control, IButtonControl)
+        +EscCierra(Form)
+        +MostrarError(IWin32Window, string)
+        +MostrarExito(IWin32Window, string)
+    }
+    class FrmLogin {
+        -BtnIngresar_Click()
+    }
+    class FrmCrearAdmin {
+        -BtnCrear_Click()
+    }
+    class FrmPrincipal {
+        +CerrarSesionSolicitado : bool
+        +MotivoCierre : string
+        -Abrir(Action, Func<Form>)
+        -CerrarSesion(string)
+        -CerrarPorInactividad()
+    }
+    class FrmPacientes {
+        -RecargarLista()
+        -Mostrar(ResultadoPagina)
+        -BtnGuardar_Click()
+        -BtnEliminar_Click()
+        -AbrirHistoria()
+    }
+    class FrmHistoriaClinica {
+        -RecargarAtenciones()
+        -BtnGuardar_Click()
+    }
+    class FrmInventario {
+        -Mostrar(ResultadoPagina)
+        -PintarFila(DataGridViewRow, Medicamento)
+        -BtnGuardar_Click()
+        -BtnMovimiento_Click()
+        -AbrirHistorial()
+    }
+    class FrmHistorialMovimientos
+    class ItemCatalogo {
+        +Id : int
+        +Nombre : string
+        +Activo : bool
+        +MedicamentosQueLoUsan : int
+        +EsSinDefinir : bool
+    }
+    class CatalogoServicio {
+        +ListarActivos(TipoCatalogo) : List<ItemCatalogo>
+        +ContarMedicamentos(TipoCatalogo, int) : int
+        +Validar(string) : Dictionary
+        +Registrar(TipoCatalogo, string) : ItemCatalogo
+        +Actualizar(TipoCatalogo, int, string)
+        +DarDeBaja(TipoCatalogo, int)
+    }
+    class CatalogoDatos {
+        +Listar(TipoCatalogo) : List<ItemCatalogo>
+        +Obtener(TipoCatalogo, int) : ItemCatalogo
+        +ExisteNombre(TipoCatalogo, string, int) : bool
+        +Insertar(TipoCatalogo, string) : int
+        +ActualizarNombre(TipoCatalogo, int, string)
+        +BajaLogica(TipoCatalogo, int)
+        +ContarMedicamentos(TipoCatalogo, int) : int
+    }
+    class FrmFormasUnidades {
+        -AlCambiarCatalogo()
+        -BtnGuardar_Click()
+        -BtnEliminar_Click()
+    }
+    class Cie10 {
+        +Codigo : string
+        +Descripcion : string
+        +Activo : bool
+        +Texto : string
+    }
+    class Cie10Servicio {
+        +BuscarPagina(string, int, Func) : ResultadoPagina<Cie10>
+        +Sugerir(string, Func) : ResultadoPagina<Cie10>
+        +Obtener(string) : Cie10
+        +Validar(string, string, bool) : Dictionary
+        +Registrar(string, string) : Cie10
+        +Actualizar(string, string)
+        +DarDeBaja(string)
+        +CifrarCodigo(string) : byte[]
+        +DescifrarCodigo(byte[], out bool) : string
+    }
+    class Cie10Datos {
+        +Contar(string) : int
+        +ListarPagina(string, int, int) : List<Cie10>
+        +Sugerir(string, int) : List<Cie10>
+        +ObtenerPorCodigo(string) : Cie10
+        +ListarTodos() : List<Cie10>
+        +Insertar(Cie10)
+        +ActualizarDescripcion(string, string)
+        +BajaLogica(string)
+    }
+    class FrmCie10 {
+        -Mostrar(ResultadoPagina)
+        -BtnGuardar_Click()
+        -BtnEliminar_Click()
+    }
+    class CuadroCie10 {
+        +CodigoElegido : string
+        +HayTextoSinElegir : bool
+        +Limpiar()
+    }
+    class DiagnosticoReporteFila {
+        +Fecha : DateTime
+        +Cie10Cifrado : byte[]
+    }
+    class Proveedor {
+        +IdProveedor : int
+        +Nombre : string
+        +Ruc : string
+        +Telefono : string
+        +Correo : string
+        +Direccion : string
+        +Activo : bool
+    }
+    class ProveedorServicio {
+        +BuscarPagina(string, int, Func) : ResultadoPagina<Proveedor>
+        +ListarActivos() : List<Proveedor>
+        +Validar(...) : Dictionary
+        +ListarFormasActivas() : List<ItemCatalogo>
+        +ListarUnidadesActivas() : List<ItemCatalogo>
+        +Registrar(nombre, concentracion, idForma, idUnidad, ...) : Proveedor
+        +Actualizar(...)
+        +DarDeBaja(int)
+        +ContarMovimientos(int) : int
+    }
+    class ProveedorDatos {
+        +Contar(string) : int
+        +ListarPagina(string, int, int) : List<Proveedor>
+        +ListarActivos() : List<Proveedor>
+        +ExisteRuc(string, int) : bool
+        +Insertar(Proveedor) : int
+        +Actualizar(Proveedor)
+        +BajaLogica(int)
+        +ExisteActivo(int, SqlConnection, SqlTransaction) : bool
+        +ContarMovimientos(int) : int
+    }
+    class FrmProveedores {
+        -Mostrar(ResultadoPagina)
+        -BtnGuardar_Click()
+        -BtnEliminar_Click()
+    }
+    class FrmUsuarios {
+        -BtnGuardar_Click()
+        -BtnEstado_Click()
+    }
+    class FrmRespaldo {
+        -Worker_DoWork()
+        -Worker_ProgressChanged()
+        -Worker_Completed()
+        -BtnRespaldar_Click()
+        -BtnAbrir_Click()
+    }
+    class FrmReportes {
+        -BtnGenerar_Click()
+        -BtnExportar_Click()
+    }
+    class MonitorInactividad <<sealed>> {
+        +LimitePorDefecto : TimeSpan
+        +InactividadAgotada : event
+        +Iniciar()
+        {static} +Pausar()
+        {static} +Reanudar()
+        +PreFilterMessage(Message) : bool
+    }
+    class PanelDashboard {
+        -Construir()
+        +Actualizar()
+        -Worker_Completed()
+        -Aplicar(DatosDashboard)
+        -LlenarGrafico(...)
+        -LlenarAlertas(...)
+        +SolicitaInventario : event
+    }
+    class TarjetaKpi {
+        +Mostrar(int, NivelKpi)
+    }
+    enum NivelKpi {
+        Normal
+        Ambar
+        Rojo
+    }
+    class "ControladorBusqueda<T>" as ControladorBusqueda <<sealed>> {
+        +EsperaMilisegundos : int
+        +Filtro : object
+        +TextoCambio(string)
+        +BuscarYa()
+        +IrAPagina(int)
+        +Recargar()
+    }
+    class ManejadorErrores <<static>> {
+        +Instalar()
+        +Registrar(Exception) : string
+    }
+}
+
+package "Negocio" {
+    abstract class Persona {
+        +Dni : string
+        +Nombres : string
+        +Apellidos : string
+        +FechaNacimiento : DateTime
+        +Telefono : string
+        +NombreCompleto : string
+        +ObtenerEdad() : int
+        +MostrarDatos() : string
+    }
+    class Paciente {
+        +IdPaciente : int
+        +IdPosta : int
+        +Direccion : string
+        +DniCifrado : byte[]
+        +DniHash : string
+        +IdHistoria : int
+        +NumeroHistoria : string
+        +MostrarDatos() : string
+    }
+    class HistoriaClinica {
+        +IdHistoria : int
+        +IdPaciente : int
+        +NumeroHistoria : string
+        +Atenciones : IReadOnlyList<Atencion>
+        +AgregarAtencion(Atencion)
+    }
+    class Atencion {
+        +IdAtencion : int
+        +IdHistoria : int
+        +IdMedico : int
+        +Fecha : DateTime
+        +Motivo : string
+        +Diagnostico : string
+        +DiagnosticoCifrado : byte[]
+        +Cie10Cifrado : byte[]
+        +Cie10Codigo : string
+        +Cie10Descripcion : string
+        +Cie10Ilegible : bool
+        +Cie10Texto : string
+        +IdMedicamento : int
+        +CantidadRecetada : int
+        +RecetaTexto : string
+        +TieneReceta : bool
+    }
+    class Establecimiento <<static>> {
+        +Nombre : string
+        +IdPosta : int
+        +Inicializar()
+    }
+    class Posta {
+        +IdPosta : int
+        +Nombre : string
+        +Distrito : string
+        +Categoria : string
+    }
+    class Medicamento {
+        +IdMedicamento : int
+        +Nombre : string
+        +Presentacion : string
+        +Concentracion : string
+        +IdForma : int?
+        +IdUnidad : int?
+        +FormaNombre : string
+        +UnidadNombre : string
+        +NombreCompleto : string
+        +StockTexto : string
+        +FormatoCantidad(int, string) : string$
+        +Stock : int
+        +StockMinimo : int
+        +FechaVencimiento : DateTime
+        +EstaBajoStock : bool
+        +EstaPorVencer : bool
+        +EstaVencido : bool
+        +DescripcionStock : string
+        +Ingresar(int)
+        +Retirar(int)
+    }
+    class MovimientoInventario {
+        +IdMovimiento : int
+        +Tipo : TipoMovimiento
+        +Cantidad : int
+        +Motivo : string
+        +IdProveedor : int?
+        +NumeroDocumento : string
+        +NombreProveedor : string
+        +Fecha : DateTime
+    }
+    class Usuario {
+        +IdUsuario : int
+        +NombreUsuario : string
+        +PasswordHash : byte[]
+        +Salt : byte[]
+        +Iteraciones : int
+        +Rol : Rol
+        +Activo : bool
+        +IntentosFallidos : int
+        +BloqueadoHasta : DateTime
+        +EstaBloqueado : bool
+    }
+    enum Rol {
+        Administrador
+        Medico
+        Farmacia
+    }
+    enum TipoMovimiento {
+        Ingreso
+        Salida
+    }
+    class Validador <<static internal>> {
+        +TextoObligatorio(string, string, int) : string
+        +Dni(string) : string
+        +Telefono(string) : string
+        +NoNegativo(int, string) : int
+        +Positivo(int, string) : int
+        +FechaNoFutura(DateTime, string) : DateTime
+    }
+    class ValidacionException {
+        +Campo : string
+    }
+    class ReglaNegocioException
+    class AccesoDenegadoException
+    class Permisos <<static>> {
+        +PuedeAccederPacientes : bool
+        +PuedeAccederInventario : bool
+        +EsAdministrador : bool
+        +PuedeVerReportes : bool
+        +PuedeRecetar : bool
+        +ExigirAccesoPacientes()
+        +ExigirAccesoInventario()
+        +ExigirAccesoReportes()
+        +ExigirAdministrador()
+        +ExigirRecetar()
+        +ExigirAccesoDashboard()
+    }
+    class AutenticacionServicio {
+        +ExistenUsuarios() : bool
+        +Login(string, string) : ResultadoLogin
+        {static} +ValidarPolitica(string) : string
+        +CrearAdministradorInicial(...) : int
+        +CrearUsuario(...) : int
+    }
+    class ResultadoLogin {
+        +Exitoso : bool
+        +Mensaje : string
+        +Usuario : Usuario
+    }
+    class PacienteServicio {
+        +Listar() : List<Paciente>
+        +BuscarPagina(string, int, Func) : ResultadoPagina<Paciente>
+        +BuscarPorDni(string) : Paciente
+        +FiltrarPorPosta(...) : List<Paciente>
+        +BuscarEnMemoria(...) : List<Paciente>
+        +OrdenarPorApellido(...) : List<Paciente>
+        +DescifrarDni(int) : string
+        +Validar(...) : Dictionary
+        +Registrar(...) : Paciente
+        +Actualizar(...)
+        +DarDeBaja(int)
+        +ObtenerHistoria(int) : HistoriaClinica
+        +ListarAtenciones(int) : List<Atencion>
+        +ListarMedicamentosRecetables(int) : List<Medicamento>
+        +ValidarReceta(int, int) : Dictionary
+        +RegistrarAtencion(int, string, string, int, int, SignosVitales, bool, string) : Atencion
+        +ValidarCie10(string) : string
+    }
+    class InventarioServicio {
+        +Listar() : List<Medicamento>
+        +BuscarEnMemoria(...) : List<Medicamento>
+        +BuscarPagina(string, bool, int, int, Func) : ResultadoPagina<Medicamento>
+        +StockBajo(...) : List<Medicamento>
+        +PorVencer(...) : List<Medicamento>
+        +Vencidos(...) : List<Medicamento>
+        +Criticos(...) : List<Medicamento>
+        +ObtenerCriticos() : List<Medicamento>
+        +Registrar(...) : Medicamento
+        +Actualizar(...)
+        +DarDeBaja(int)
+        +ValidarIngreso(int, string, int, string) : Dictionary
+        +RegistrarIngreso(int, int, string, int, string)
+        +ListarProveedoresActivos() : List<Proveedor>
+        +RegistrarSalida(int, int, string)
+        +ListarMovimientos(int) : List<MovimientoInventario>
+    }
+    class UsuarioServicio {
+        +Listar() : List<Usuario>
+        +Crear(...) : int
+        +CambiarRol(int, Rol)
+        +CambiarActivo(int, bool)
+        +RestablecerContrasena(int, string, string)
+    }
+    class RespaldoServicio {
+        +ExportarPaciente(Paciente, string, Action)
+        +ExportarEstablecimiento(string, Action, Func) : int
+        +Verificar(string) : RespaldoArchivo
+    }
+    class ReporteServicio {
+        +PacientesAtendidosPorDia(DateTime, DateTime) : ReporteTabla
+        +DiagnosticosMasFrecuentes(DateTime, DateTime) : ReporteTabla
+        +MedicamentosCriticos() : ReporteTabla
+        +MovimientosPorFecha(DateTime, DateTime) : ReporteTabla
+    }
+    class ReporteTabla {
+        +Titulo : string
+        +Columnas : List<string>
+        +Filas : List<string[]>
+        +GuardarCsv(string)
+    }
+    class "ResultadoPagina<T>" as ResultadoPagina {
+        +Items : List<T>
+        +Total : int
+        +Pagina : int
+        +TamanoPagina : int
+        +Milisegundos : long
+        +TotalPaginas : int
+        +TextoPagina : string
+    }
+    class Paginacion <<static>> {
+        +TamanoPagina : int
+        +CalcularTotalPaginas(int, int) : int
+    }
+    class DashboardServicio {
+        +Cargar() : DatosDashboard
+        +CargarBloquePacientes(DatosDashboard)
+        +CargarBloqueInventario(DatosDashboard)
+    }
+    class DatosDashboard {
+        +VePacientes : bool
+        +VeInventario : bool
+        +PacientesActivos : int
+        +AtencionesHoy : int
+        +AtencionesMes : int
+        +StockBajo : int
+        +PorVencer : int
+        +Vencidos : int
+        +AtencionesPorDiaDelMes : List<PuntoDato>
+        +AtencionesUltimos7Dias : List<PuntoDato>
+        +Alertas : List<Medicamento>
+        +ErrorPacientes : bool
+        +ErrorInventario : bool
+    }
+    class PuntoDato {
+        +Etiqueta : string
+        +Valor : int
+    }
+    class RespaldoArchivo {
+        +Version : string
+        +FechaRespaldo : DateTime
+        +Alcance : string
+        +Posta : string
+        +Pacientes : List<PacienteRespaldo>
+    }
+    class PacienteRespaldo {
+        +NumeroHistoria : string
+        +Dni : string
+        +Atenciones : List<AtencionRespaldo>
+    }
+    class AtencionRespaldo {
+        +Fecha : DateTime
+        +Motivo : string
+        +Diagnostico : string
+        +Receta : string
+    }
+}
+
+package "Datos" {
+    class Conexion <<static>> {
+        +ObtenerCadena() : string
+        +Crear() : SqlConnection
+        +Comando(string, SqlConnection) : SqlCommand
+    }
+    class UsuarioDatos {
+        +ObtenerPorNombre(string) : Usuario
+        +ObtenerPorId(int) : Usuario
+        +Listar() : List<Usuario>
+        +Crear(Usuario) : int
+        +CambiarRol(int, Rol) : int
+        +CambiarActivo(int, bool) : int
+        +RestablecerContrasena(...) : int
+        +RegistrarIntentoFallido(int) : int
+        +BloquearHasta(int, DateTime)
+        +ReiniciarIntentos(int)
+    }
+    class PacienteDatos {
+        +Listar() : List<Paciente>
+        +Contar(string) : int
+        +ListarPagina(string, int, int) : List<Paciente>
+        +BuscarPorDniHash(string) : Paciente
+        +ObtenerDniCifrado(int) : byte[]
+        +Insertar(Paciente, SqlConnection, SqlTransaction) : int
+        +Actualizar(Paciente)
+        +BajaLogica(int)
+    }
+    class HistoriaDatos {
+        +ObtenerPorPaciente(int) : HistoriaClinica
+        +ObtenerSiguienteNumero(SqlConnection, SqlTransaction) : string
+        +Insertar(HistoriaClinica, SqlConnection, SqlTransaction) : int
+        +ListarAtenciones(int) : List<Atencion>
+        +InsertarAtencion(Atencion) : int
+        +InsertarAtencion(Atencion, SqlConnection, SqlTransaction) : int
+        +ObtenerNumeroYPosta(int, SqlConnection, SqlTransaction) : bool
+    }
+    class MedicamentoDatos {
+        +Listar() : List<Medicamento>
+        +Contar(string, bool, DateTime, int) : int
+        +ListarPagina(string, bool, DateTime, int, int, int) : List<Medicamento>
+        +Insertar(Medicamento, SqlConnection, SqlTransaction) : int
+        +Actualizar(Medicamento)
+        +BajaLogica(int)
+        +IncrementarStock(int, int, SqlConnection, SqlTransaction) : int
+        +DescontarStock(int, int, SqlConnection, SqlTransaction) : int
+        +ObtenerPorIdParaReceta(int, SqlConnection, SqlTransaction) : Medicamento
+        +InsertarMovimiento(MovimientoInventario, SqlConnection, SqlTransaction) : int
+        +ListarMovimientos(int) : List<MovimientoInventario>
+    }
+    class ReporteDatos {
+        +ListarAtenciones(DateTime, DateTime) : List<AtencionReporteFila>
+        +ListarDiagnosticos(DateTime, DateTime) : List<DiagnosticoReporteFila>
+        +ListarMovimientos(DateTime, DateTime) : List<MovimientoReporteFila>
+    }
+    class DashboardDatos {
+        +ObtenerResumenPacientes(DateTime, DateTime, DateTime) : ResumenPacientesFila
+        +ObtenerAtencionesPorDia(DateTime, DateTime) : Dictionary
+        +ObtenerResumenInventario(DateTime, DateTime) : ResumenInventarioFila
+        +ObtenerMedicamentosCriticos(DateTime, DateTime, int) : List<Medicamento>
+    }
+    class ResumenPacientesFila
+    class ResumenInventarioFila
+    class PatronBusqueda <<static>> {
+        +HayTexto(string) : bool
+        +Prefijo(string) : string
+        +AgregarParametrosPersona(SqlCommand, string)
+    }
+    class EstablecimientoDatos {
+        +ObtenerIdPosta() : int
+    }
+    class AtencionReporteFila
+    class MovimientoReporteFila
+}
+
+package "Seguridad" {
+    class HashContrasena <<static>> {
+        +Iteraciones : int
+        +GenerarPartes(string) : DatosHash
+        +Verificar(string, byte[], byte[], int) : bool
+        +ComparacionConstante(byte[], byte[]) : bool
+    }
+    class CifradoAes <<static>> {
+        +CifrarABytes(string) : byte[]
+        +DescifrarDeBytes(byte[]) : string
+    }
+    class HmacDni <<static>> {
+        +Calcular(string) : string
+    }
+    class GestorLlaves <<static>> {
+        +ObtenerLlaveAes() : byte[]
+        +ObtenerLlaveHmac() : byte[]
+    }
+    class Sesion <<static>> {
+        +UsuarioActual : Usuario
+        +EstaAutenticado : bool
+        +Iniciar(Usuario)
+        +Cerrar()
+        +TieneRol(Rol[]) : bool
+    }
+    class ArchivoRespaldoSeguro <<static>> {
+        {static} +Guardar<T>(string, T)
+        {static} +Leer<T>(string) : T
+    }
+    class RespaldoInvalidoException
+}
+
+' ---------- Herencia ----------
+Persona <|-- Paciente
+ArgumentException <|-- ValidacionException
+InvalidOperationException <|-- ReglaNegocioException
+UnauthorizedAccessException <|-- AccesoDenegadoException
+Exception <|-- RespaldoInvalidoException
+Form <|-- FrmLogin
+Form <|-- FrmCrearAdmin
+Form <|-- FrmPrincipal
+Form <|-- FrmPacientes
+Form <|-- FrmHistoriaClinica
+Form <|-- FrmInventario
+Form <|-- FrmHistorialMovimientos
+Form <|-- FrmFormasUnidades
+Form <|-- FrmCie10
+TextBox <|-- CuadroCie10
+Form <|-- FrmProveedores
+Form <|-- FrmUsuarios
+Form <|-- FrmRespaldo
+Form <|-- FrmReportes
+IMessageFilter <|.. MonitorInactividad
+
+' ---------- Entidades: composicion y asociaciones ----------
+HistoriaClinica "1" *-- "0..*" Atencion : contiene
+Atencion "*" --> "0..1" Medicamento : receta opcional
+Paciente "1" -- "1" HistoriaClinica : IdPaciente
+Paciente "*" --> "1" Posta : IdPosta
+Medicamento "*" --> "1" Posta : IdPosta
+MovimientoInventario "*" --> "1" Medicamento : IdMedicamento
+MovimientoInventario --> TipoMovimiento
+Usuario --> Rol
+RespaldoArchivo "1" *-- "*" PacienteRespaldo
+PacienteRespaldo "1" *-- "*" AtencionRespaldo
+Persona ..> Validador : valida en set
+Medicamento ..> Validador
+Usuario ..> Validador
+Validador ..> ValidacionException : lanza
+
+' ---------- Presentacion -> Negocio ----------
+FrmLogin --> AutenticacionServicio
+FrmCrearAdmin --> AutenticacionServicio
+FrmPacientes --> PacienteServicio
+FrmHistoriaClinica --> PacienteServicio
+FrmInventario --> InventarioServicio
+FrmHistorialMovimientos --> InventarioServicio
+FrmFormasUnidades --> CatalogoServicio
+FrmPrincipal ..> FrmFormasUnidades : abre (Administrador y Farmacia)
+CatalogoServicio --> CatalogoDatos
+CatalogoServicio ..> ItemCatalogo
+CatalogoServicio ..> Permisos : Administrador y Farmacia
+CatalogoServicio ..> AuditoriaServicio : alta, edicion y baja
+CatalogoDatos ..> Conexion
+InventarioServicio --> CatalogoDatos : valida forma y unidad
+FrmInventario ..> ItemCatalogo : listas de forma y unidad
+Medicamento "*" --> "0..1" ItemCatalogo : IdForma / IdUnidad
+FrmCie10 --> Cie10Servicio
+FrmCie10 --> ControladorBusqueda : espera 300 ms
+FrmPrincipal ..> FrmCie10 : abre (solo Administrador)
+CuadroCie10 --> Cie10Servicio : Sugerir
+CuadroCie10 --> ControladorBusqueda : 300 ms, segundo plano
+FrmHistoriaClinica *-- CuadroCie10
+Cie10Servicio --> Cie10Datos
+Cie10Servicio ..> Cie10
+Cie10Servicio ..> Permisos : Administrador (catalogo) / Medico (sugerencias)
+Cie10Servicio ..> CifradoAes : cifra el codigo
+Cie10Datos ..> Conexion
+PacienteServicio --> Cie10Datos : descripcion del codigo
+PacienteServicio ..> Cie10Servicio : cifrar y descifrar
+ReporteServicio --> Cie10Datos
+ReporteServicio ..> Cie10Servicio : descifra en memoria (LINQ)
+ReporteDatos ..> DiagnosticoReporteFila
+FrmProveedores --> ProveedorServicio
+FrmProveedores --> ControladorBusqueda : espera 300 ms
+FrmPrincipal ..> FrmProveedores : abre
+ProveedorServicio --> ProveedorDatos
+ProveedorServicio ..> Proveedor
+ProveedorServicio ..> Permisos : Administrador y Farmacia
+ProveedorServicio ..> AuditoriaServicio : alta, edicion y baja
+ProveedorServicio ..> ResultadoPagina
+ProveedorDatos ..> Conexion
+ProveedorDatos ..> PatronBusqueda
+InventarioServicio --> ProveedorDatos : proveedor del ingreso
+MovimientoInventario "*" --> "0..1" Proveedor : IdProveedor
+FrmInventario ..> Proveedor : elige en el ingreso
+FrmUsuarios --> UsuarioServicio
+FrmRespaldo --> RespaldoServicio
+FrmRespaldo --> PacienteServicio
+FrmReportes --> ReporteServicio
+FrmPrincipal --> MonitorInactividad
+FrmPrincipal ..> FrmPacientes : abre
+FrmPrincipal ..> FrmInventario : abre
+FrmPrincipal ..> FrmUsuarios : abre
+FrmPrincipal ..> FrmRespaldo : abre
+FrmPrincipal ..> FrmReportes : abre
+FrmPacientes ..> FrmHistoriaClinica : abre
+FrmInventario ..> FrmHistorialMovimientos : abre
+FrmLogin ..> Estilo
+FrmPrincipal ..> Estilo
+FrmPacientes ..> Estilo
+FrmInventario ..> Estilo
+FrmUsuarios ..> Estilo
+FrmRespaldo ..> Estilo
+FrmReportes ..> Estilo
+FrmRespaldo ..> ManejadorErrores
+
+' ---------- Servicios -> Datos / Seguridad / Permisos ----------
+AutenticacionServicio --> UsuarioDatos
+AutenticacionServicio ..> HashContrasena
+AutenticacionServicio ..> Sesion
+AutenticacionServicio ..> ResultadoLogin
+UsuarioServicio --> UsuarioDatos
+UsuarioServicio --> AutenticacionServicio
+UsuarioServicio ..> HashContrasena
+PacienteServicio --> PacienteDatos
+PacienteServicio --> HistoriaDatos
+PacienteServicio --> MedicamentoDatos : receta descuenta stock
+PacienteServicio ..> InventarioServicio : constantes de cantidad
+PacienteServicio ..> CifradoAes
+PacienteServicio ..> HmacDni
+InventarioServicio --> MedicamentoDatos
+RespaldoServicio --> PacienteServicio
+RespaldoServicio ..> ArchivoRespaldoSeguro
+RespaldoServicio ..> RespaldoArchivo
+ReporteServicio --> ReporteDatos
+ReporteServicio --> InventarioServicio
+ReporteServicio ..> ReporteTabla
+Permisos ..> Sesion
+Permisos ..> AccesoDenegadoException : lanza
+PacienteServicio ..> Permisos
+InventarioServicio ..> Permisos
+UsuarioServicio ..> Permisos
+RespaldoServicio ..> Permisos
+ReporteServicio ..> Permisos
+Sesion --> Usuario
+
+' ---------- Datos -> Conexion y entidades ----------
+UsuarioDatos ..> Conexion
+PacienteDatos ..> Conexion
+HistoriaDatos ..> Conexion
+MedicamentoDatos ..> Conexion
+ReporteDatos ..> Conexion
+UsuarioDatos ..> Usuario
+PacienteDatos ..> Paciente
+HistoriaDatos ..> HistoriaClinica
+MedicamentoDatos ..> Medicamento
+ReporteDatos ..> AtencionReporteFila
+ReporteDatos ..> MovimientoReporteFila
+
+' ----- Dashboard (panel de inicio) -----
+UserControl <|-- PanelDashboard
+Panel <|-- TarjetaKpi
+FrmPrincipal --> PanelDashboard : pantalla de inicio
+PanelDashboard --> DashboardServicio
+PanelDashboard ..> TarjetaKpi
+PanelDashboard ..> NivelKpi
+PanelDashboard ..> DatosDashboard
+PanelDashboard ..> InventarioServicio : TextoAlerta
+PanelDashboard ..> ManejadorErrores
+PanelDashboard ..> Estilo
+DashboardServicio --> DashboardDatos
+DashboardServicio ..> DatosDashboard : arma
+DashboardServicio ..> Permisos
+DatosDashboard o-- PuntoDato
+DatosDashboard o-- Medicamento : Alertas
+DashboardDatos ..> Conexion
+DashboardDatos ..> ResumenPacientesFila
+DashboardDatos ..> ResumenInventarioFila
+
+' ----- Establecimiento unico (Posta Jesus Nazareno) -----
+Establecimiento --> EstablecimientoDatos : lee IdPosta una sola vez
+EstablecimientoDatos ..> Conexion
+PacienteServicio ..> Establecimiento : asigna la posta
+InventarioServicio ..> Establecimiento : asigna la posta
+RespaldoServicio ..> Establecimiento
+FrmLogin ..> Establecimiento : nombre en la barra
+FrmPrincipal ..> Establecimiento : nombre en la barra
+PanelDashboard ..> Establecimiento
+
+' ----- Rendimiento (etapa 10): paginacion y busqueda -----
+FrmPacientes --> ControladorBusqueda : espera 300 ms
+FrmInventario --> ControladorBusqueda : espera 300 ms
+ControladorBusqueda ..> ResultadoPagina
+PacienteServicio ..> ResultadoPagina
+InventarioServicio ..> ResultadoPagina
+ResultadoPagina ..> Paginacion
+PacienteDatos ..> PatronBusqueda
+MedicamentoDatos ..> PatronBusqueda
+
+' ---------- Seguridad interna ----------
+CifradoAes ..> GestorLlaves
+HmacDni ..> GestorLlaves
+ArchivoRespaldoSeguro ..> GestorLlaves
+ArchivoRespaldoSeguro ..> HashContrasena : ComparacionConstante
+ArchivoRespaldoSeguro ..> RespaldoInvalidoException : lanza
+
+note bottom of Persona
+  Form, UserControl, Panel, IMessageFilter, ArgumentException,
+  InvalidOperationException, UnauthorizedAccessException
+  y Exception son clases del framework .NET.
+end note
+' ---- Detalle clínico (etapa 11) ----
+enum NivelSigno {
+  Normal
+  Ambar
+  Rojo
+}
+class SignosVitales {
+  +PesoKg : decimal?
+  +TallaCm : decimal?
+  +PresionSistolica : int?
+  +PresionDiastolica : int?
+  +Temperatura : decimal?
+  +FrecuenciaCardiaca : int?
+  +SaturacionO2 : int?
+  +Imc : decimal?
+  +Validar() : Dictionary
+  +Resumen() : string
+  {static} +NivelTemperatura(decimal) : NivelSigno
+  {static} +NivelSaturacion(int) : NivelSigno
+  {static} +NivelPresion(int, int) : NivelSigno
+}
+class Alergia {
+  +Sustancia : string
+  +Gravedad : string
+  +Observacion : string
+  +Activo : bool
+  +EsGrave : bool
+  {static} +Coincide(string, string) : bool
+}
+class AlergiaDatos {
+  +ListarPorPaciente(int) : List
+  +ListarActivasPorHistoria(int, SqlConnection, SqlTransaction) : List
+  +Insertar(Alergia) : int
+  +Desactivar(int)
+}
+class PanelSignosVitales {
+  +Leer(Dictionary) : SignosVitales
+  +MostrarErrores(Dictionary)
+  +Limpiar()
+}
+class SignosRespaldo
+class AlergiaRespaldo
+SignosVitales ..> NivelSigno
+Atencion o-- SignosVitales
+PacienteServicio ..> AlergiaDatos
+AlergiaDatos ..> Alergia
+FrmHistoriaClinica *-- PanelSignosVitales
+PanelSignosVitales ..> SignosVitales
+@enduml
